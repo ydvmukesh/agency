@@ -84,30 +84,6 @@ h2 {
     line-height: 135%;
 }
 
-a {
-    color: var(--black-600);
-    text-decoration: none;
-    display: inline-block;
-}
-
-img {
-    max-width: 100%;
-    display: inline-block;
-}
-
-.container {
-    grid-column-gap: 4rem;
-    grid-row-gap: 4rem;
-    flex-flow: column;
-    width: 100%;
-    max-width: 1440px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-    display: flex;
-}
-
 .container.is_blog {
     grid-column-gap: 0rem;
     grid-row-gap: 0rem;
@@ -551,12 +527,6 @@ img {
 @media screen and (max-width:991px) {
     h2 {
         font-size: 2.7rem;
-    }
-    .container {
-        grid-column-gap: 2rem;
-        grid-row-gap: 2rem;
-        padding-left: 1.25rem;
-        padding-right: 1.25rem;
     }
     .container.is_blog {
         border-top-style: none;
