@@ -1,0 +1,169 @@
+/*! CSS Used from: https://cdn.prod.website-files.com/6655d16113e6966ef4eb1041/css/wavespace.shared.497b1c0f0.min.css */
+
+.w-embed:before,
+.w-embed:after {
+    content: " ";
+    grid-area: 1/1/2/2;
+    display: table;
+}
+
+.w-embed:after {
+    clear: both;
+}
+
+.container.is_video-inside {
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    position: relative;
+}
+
+.video-play {
+    margin-bottom: 0;
+    overflow: hidden;
+}
+
+.play-video {
+    z-index: 99999;
+    background-color: #000000e6;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    position: fixed;
+    inset: 0%;
+}
+
+.video-close-btn {
+    background-color: var(--yellow-600);
+    color: var(--black-600);
+    cursor: pointer;
+    border-radius: 100%;
+    justify-content: center;
+    align-items: center;
+    width: 8.125rem;
+    height: 8.125rem;
+    display: none;
+    position: absolute;
+}
+
+.close-text {
+    text-transform: capitalize;
+}
+
+.showreel_section {
+    position: relative;
+    overflow: hidden;
+}
+
+.video_wrapper {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.showreel-lightbox {
+    z-index: 10;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    display: inline-flex;
+    position: relative;
+    overflow: hidden;
+}
+
+.video_inside {
+    justify-content: center;
+    align-items: center;
+    width: 60rem;
+    display: flex;
+    position: relative;
+}
+
+.showreel-close-btn-img {
+    width: 100%;
+    height: 100%;
+    transition: all .3s;
+}
+
+.showreel-close-btn-img:hover {
+    transform: scale(1.1);
+}
+
+.showreel-close-btn {
+    background-color: var(--transparent);
+    cursor: pointer;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    position: absolute;
+    inset: -2.5rem 0% auto auto;
+}
+
+@media screen and (min-width:1440px) {
+    .video_inside {
+        width: 70rem;
+    }
+}
+
+@media screen and (min-width:1920px) {
+    .video_inside {
+        width: 85rem;
+    }
+}
+
+@media screen and (max-width:991px) {
+    .container.is_inside-video {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .video-close-btn {
+        background-color: var(--transparent);
+        color: var(--transparent);
+        width: 100%;
+        height: 100%;
+    }
+    .video_wrapper {
+        z-index: 10;
+        padding-left: .9375rem;
+        padding-right: .9375rem;
+        position: relative;
+    }
+    .showreel-lightbox {
+        height: 27rem;
+    }
+    .video_inside {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:767px) {
+    .showreel-lightbox {
+        height: 20rem;
+    }
+    .showreel-close-btn {
+        width: 1.25rem;
+        height: 1.25rem;
+        top: -2rem;
+    }
+}
+
+@media screen and (max-width:479px) {
+    .showreel-lightbox {
+        height: 13.125rem;
+    }
+}
+
+
+/*! CSS Used from: Embedded */
+
+.play-video-off {
+    display: none!important;
+}
