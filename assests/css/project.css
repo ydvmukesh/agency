@@ -79,6 +79,10 @@
         padding-top: 4rem;
         padding-bottom: 4rem;
     }
+    .case_studies_sec {
+        padding-top:3rem;
+        padding-bottom: 3rem;
+    }
 }
 
 @media screen and (max-width:767px) {

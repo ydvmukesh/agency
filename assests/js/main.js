@@ -216,42 +216,42 @@ window.addEventListener('scroll', function() {
 });
 
 
+document.addEventListener("DOMContentLoaded", (event) => {
+    // Register plugins
+    gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+    
+    // Initialize ScrollSmoother
+    ScrollSmoother.create({
+      wrapper: "#smooth-wrapper",
+      content: "#smooth-content",
+      smooth:1,             // how long (in seconds) it takes to "catch up" to the native scroll position
+      effects: true,           // looks for data-speed and data-lag attributes on elements
+      normalizeScroll: true,   // prevents address bar from showing/hiding on most devices
+      ignoreMobileResize: true,// skips ScrollTrigger.refresh() on mobile resize
+      smoothTouch: 0.1 // enable on touch devices
+    });
+  });
 
 // . award_heading.is_1 --------------------------------------------------------//
 
 document.addEventListener('DOMContentLoaded', () => {
-    gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-
-    // Create smoother
-    const smoother = ScrollSmoother.create({
-        wrapper: "#smooth-wrapper",
-        content: "#smooth-content",
-        smooth: 1.5,
-        effects: true
-    });
+    gsap.registerPlugin(ScrollTrigger);
 
     const wrapper = document.querySelector('.award_heading_wrapper');
 
-    // Initial positions
-    gsap.set(".award_heading.is_1", {
-        xPercent: -50,
-        opacity: 0
-    });
-    gsap.set(".award_heading.is_2", {
-        xPercent: 50,
-        opacity: 0
-    });
+    gsap.set(".award_heading.is_1", { xPercent: -50, opacity: 0 });
+    gsap.set(".award_heading.is_2", { xPercent: 50, opacity: 0 });
 
-    // Common trigger options with smoother's scroller
+    const isMobile = window.matchMedia("(max-width: 991px)").matches;
+
     const triggerOpts = {
         trigger: wrapper,
         start: "top 80%",
         end: "bottom 50%",
         scrub: 1.2,
-        scroller: "#smooth-wrapper", // key for ScrollSmoother
+        scroller: isMobile ? undefined : "#smooth-wrapper"
     };
 
-    // Animate first heading
     gsap.to(".award_heading.is_1", {
         xPercent: 0,
         opacity: 1,
@@ -259,7 +259,6 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollTrigger: triggerOpts
     });
 
-    // Animate second heading with slight delay for smoothness
     gsap.to(".award_heading.is_2", {
         xPercent: 0,
         opacity: 1,
@@ -292,6 +291,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ease: "none",
         duration: 20 // adjust speed
     });
+    ScrollTrigger.refresh();
+
 });
 document.addEventListener('DOMContentLoaded', () => {
     gsap.registerPlugin(ScrollTrigger);
@@ -311,6 +312,51 @@ document.addEventListener('DOMContentLoaded', () => {
         ease: "none",
         duration: 20 // adjust speed
     });
+    ScrollTrigger.refresh();
+
+});
+document.addEventListener('DOMContentLoaded', () => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const marqueeWrap = document.querySelector(".aa_img-marquee");
+    const marqueeItems = gsap.utils.toArray(".aa_img_marquee_card");
+
+    // Get total width of one cycle
+    const totalWidth = marqueeItems[0].offsetWidth;
+
+    // Duplicate the content to make seamless loop
+    marqueeWrap.innerHTML += marqueeWrap.innerHTML;
+
+    gsap.to(".aa_img_marquee_card", {
+        xPercent: -100,
+        repeat: -1,
+        ease: "none",
+        duration: 40 // adjust speed
+    });
+    ScrollTrigger.refresh();
+
+});
+// teams about
+document.addEventListener('DOMContentLoaded', () => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const marqueeWrap = document.querySelector(".team_marquee-wrap");
+    const marqueeItems = gsap.utils.toArray(".team_marquee-child");
+
+    // Get total width of one cycle
+    const totalWidth = marqueeItems[0].offsetWidth;
+
+    // Duplicate the content to make seamless loop
+    marqueeWrap.innerHTML += marqueeWrap.innerHTML;
+
+    gsap.to(".team_marquee-child", {
+        xPercent: -100,
+        repeat: -1,
+        ease: "none",
+        duration: 40 // adjust speed
+    });
+    ScrollTrigger.refresh();
+
 });
 
 
@@ -339,47 +385,206 @@ document.addEventListener('DOMContentLoaded', () => {
 //         });
 //     });
 // });
+// document.addEventListener('DOMContentLoaded', () => {
+//     gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+
+
+//     // Equal height on mobile - improved version
+//     function setEqualHeight() {
+//         const sections = document.querySelectorAll(".service_card");
+//         let maxHeight = 0;
+
+//         // First reset all heights and get natural heights
+//         sections.forEach(card => {
+//             card.style.removeProperty('height');
+//             // Force recalc of natural height
+//             void card.offsetHeight;
+//         });
+
+//         if (window.innerWidth <= 768) { // Mobile breakpoint
+//             // Get max height
+//             sections.forEach(card => {
+//                 maxHeight = Math.max(maxHeight, card.offsetHeight);
+//             });
+
+//             // Set max height
+//             sections.forEach(card => {
+//                 card.style.height = `${maxHeight}px`;
+//             });
+//         }
+//     }
+
+//     // Debounce resize handler
+//     let resizeTimeout;
+//     function handleResize() {
+//         clearTimeout(resizeTimeout);
+//         resizeTimeout = setTimeout(() => {
+//             setEqualHeight();
+//             ScrollTrigger.refresh(); // Critical to refresh scroll triggers after resize
+//         }, 100);
+//     }
+
+//     // Initialize
+//     setEqualHeight();
+//     window.addEventListener('resize', handleResize);
+
+//     // Improved scroll pin animation
+//     const sections = document.querySelectorAll(".service_card");
+//     sections.forEach((card, i) => {
+//         let nextSection = card.nextElementSibling;
+
+//         ScrollTrigger.create({
+//             trigger: card,
+//             start: "top top",
+//             endTrigger: nextSection || card,
+//             end: "top top",
+//             pin: true,
+//             pinSpacing: false,
+//             // Add these for better mobile performance
+//             anticipatePin: 1,
+//             onUpdate: self => {
+//                 if (self.isActive) {
+//                     card.style.willChange = 'transform';
+//                 } else {
+//                     card.style.willChange = '';
+//                 }
+//             }
+//         });
+//     });
+
+//     // Refresh ScrollTrigger after all cards are laid out
+//     setTimeout(() => ScrollTrigger.refresh(), 500);
+// });
+
+
 document.addEventListener('DOMContentLoaded', () => {
     gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-    // Equal height on mobile
     function setEqualHeight() {
         const sections = document.querySelectorAll(".service_card");
+        let maxHeight = 0;
 
-        // Reset height before recalculating
-        sections.forEach(card => card.style.height = "");
+        sections.forEach(card => {
+            card.style.removeProperty('height');
+            void card.offsetHeight; // force reflow
+        });
 
-        if (window.innerWidth <= 768) { // Mobile breakpoint
-            let maxHeight = 0;
-
+        if (window.innerWidth <= 768) {
             sections.forEach(card => {
                 maxHeight = Math.max(maxHeight, card.offsetHeight);
             });
 
             sections.forEach(card => {
-                card.style.height = maxHeight + "px";
+                card.style.height = `${maxHeight}px`;
             });
         }
     }
 
-    // Run on load & resize
-    setEqualHeight();
-    window.addEventListener('resize', setEqualHeight);
+    let resizeTimeout;
+    function handleResize() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            setEqualHeight();
+            ScrollTrigger.refresh();
+        }, 100);
+    }
 
-    // Your scroll pin animation
-    const sections = document.querySelectorAll(".service_card");
-    sections.forEach((card, i) => {
-        let nextSection = card.nextElementSibling;
+    window.addEventListener('resize', handleResize);
 
-        gsap.to(card, {
-            scrollTrigger: {
+    // Build ScrollTriggers AFTER equal heights are ready
+    function initScrollTriggers() {
+        const sections = document.querySelectorAll(".service_card");
+        sections.forEach((card) => {
+            let nextSection = card.nextElementSibling;
+
+            ScrollTrigger.create({
                 trigger: card,
                 start: "top top",
                 endTrigger: nextSection || card,
                 end: "top top",
                 pin: true,
-                pinSpacing: false
+                pinSpacing: false,
+                anticipatePin: 1,
+                onUpdate: self => {
+                    card.style.willChange = self.isActive ? 'transform' : '';
+                }
+            });
+        });
+    }
+
+    // First run after images loaded (important for mobile)
+    window.addEventListener('load', () => {
+        setEqualHeight();
+        initScrollTriggers();
+        ScrollTrigger.refresh();
+    });
+});
+
+
+// services see more and see less
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Select all see more/less buttons
+    const seeMoreButtons = document.querySelectorAll('.service_see-wrap');
+    
+    // Add click event to each button
+    seeMoreButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Find the parent service card
+            const serviceCard = this.closest('.service_card');
+            const spanWrap = this.previousElementSibling; // The service_span-wrap div
+            const seeMore = this.querySelector('.see_more');
+            const seeLess = this.querySelector('.see_less');
+            
+            // Check if we're expanding or collapsing
+            if (seeMore.style.display !== 'none') {
+                // Expanding - show more content
+                // Store the current height
+                const startHeight = spanWrap.offsetHeight + 'px';
+                
+                // Show all content temporarily to measure full height
+                spanWrap.style.height = 'auto';
+                const fullHeight = spanWrap.offsetHeight + 'px';
+                
+                // Reset to start height and animate
+                spanWrap.style.height = startHeight;
+                // Trigger reflow
+                spanWrap.offsetHeight;
+                
+                // Animate to full height
+                spanWrap.style.height = fullHeight;
+                
+                // Toggle text visibility
+                seeMore.style.display = 'none';
+                seeLess.style.display = 'block';
+            } else {
+                // Collapsing - show less content
+                // Store current height
+                const startHeight = spanWrap.offsetHeight + 'px';
+                
+                // Set height to current height (for smooth transition)
+                spanWrap.style.height = startHeight;
+                
+                // Trigger reflow
+                spanWrap.offsetHeight;
+                
+                // Animate to 0 height
+                spanWrap.style.height = '0px';
+                
+                // Toggle text visibility
+                seeMore.style.display = 'block';
+                seeLess.style.display = 'none';
             }
+            
+            // Clean up after transition ends
+            spanWrap.addEventListener('transitionend', function() {
+                if (spanWrap.style.height !== '0px') {
+                    spanWrap.style.height = 'auto';
+                }
+            }, { once: true });
         });
     });
 });
@@ -448,3 +653,57 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
+// --------------------------------------------------------//
+
+
+
+// about css
+
+document.addEventListener('DOMContentLoaded', function () {
+    const faqCards = document.querySelectorAll('.lb_faq_card');
+
+    faqCards.forEach(card => {
+        const question = card.querySelector('.lb_ques_wrap');
+        const answerWrap = card.querySelector('.lb_ans_wrap');
+        const icon = card.querySelector('.lb_faq_icon');
+
+        question.addEventListener('click', function () {
+            const isOpen = answerWrap.style.height && answerWrap.style.height !== '0px';
+
+            if (!isOpen) {
+                // --- Expand ---
+                answerWrap.style.height = 'auto';
+                const fullHeight = answerWrap.offsetHeight + 'px';
+                answerWrap.style.height = '0px';
+                void answerWrap.offsetHeight;
+                answerWrap.style.height = fullHeight;
+
+                // Rotate icon
+                icon.style.transform =
+                    'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateZ(180deg) skew(0deg, 0deg)';
+            } else {
+                // --- Collapse ---
+                answerWrap.style.height = answerWrap.offsetHeight + 'px';
+                void answerWrap.offsetHeight;
+                answerWrap.style.height = '0px';
+
+                // Reset icon rotation
+                icon.style.transform =
+                    'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateZ(0deg) skew(0deg, 0deg)';
+            }
+
+            answerWrap.addEventListener('transitionend', function () {
+                if (answerWrap.style.height !== '0px') {
+                    answerWrap.style.height = 'auto';
+                }
+            }, { once: true });
+        });
+    });
+});
+
+
+
+
+

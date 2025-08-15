@@ -1,5 +1,7 @@
-/*! CSS Used from: https://cdn.prod.website-files.com/6655d16113e6966ef4eb1041/css/wavespace.shared.497b1c0f0.min.css */
 
+.marquee_bg {
+    background-color: #f3f2f2;
+}
 .container.is_marquee {
     grid-column-gap: 3rem;
     grid-row-gap: 3rem;

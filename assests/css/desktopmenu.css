@@ -430,7 +430,7 @@ nav {
         grid-row-gap: .375rem;
         color: #fff;
         cursor: pointer;
-        background-color: #3f2fee;
+        background-color: var(--red-color);
         border-radius: 100px;
         flex: none;
         justify-content: center;

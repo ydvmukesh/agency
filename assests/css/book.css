@@ -264,7 +264,7 @@
         font-size: 2.25rem;
     }
     .book_place-flex {
-        grid-column-gap: 2rem;
+        grid-column-gap: 1rem;
         grid-row-gap: 2rem;
     }
     .business_inquiry-title {
@@ -337,7 +337,7 @@
         grid-row-gap: 1rem;
     }
     .book_contact-wrap {
-        grid-column-gap: 2rem;
+        grid-column-gap: 1rem;
         grid-row-gap: 2rem;
         justify-content: flex-start;
         align-items: flex-start;

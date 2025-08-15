@@ -326,7 +326,7 @@ textarea.w-input {
 
 .form-input:focus {
     color: var(--black-600);
-    border-color: #3f2fee;
+    border-color: var(--red-color);
 }
 
 .form-input::placeholder {
