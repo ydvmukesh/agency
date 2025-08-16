@@ -239,8 +239,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const wrapper = document.querySelector('.award_heading_wrapper');
 
-    gsap.set(".award_heading.is_1", { xPercent: -50, opacity: 0 });
-    gsap.set(".award_heading.is_2", { xPercent: 50, opacity: 0 });
+    gsap.set(".award_heading.is_1", { xPercent: -50, opacity: 1 });
+    gsap.set(".award_heading.is_2", { xPercent: 50, opacity: 1 });
 
     const isMobile = window.matchMedia("(max-width: 991px)").matches;
 
@@ -456,68 +456,154 @@ document.addEventListener('DOMContentLoaded', () => {
 //     setTimeout(() => ScrollTrigger.refresh(), 500);
 // });
 
+// -----------------12-8
+// document.addEventListener('DOMContentLoaded', () => {
+//     gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
+//     function setEqualHeight() {
+//         const sections = document.querySelectorAll(".service_card");
+//         let maxHeight = 0;
+
+//         sections.forEach(card => {
+//             card.style.removeProperty('height');
+//             void card.offsetHeight; // force reflow
+//         });
+
+//         if (window.innerWidth <= 768) {
+//             sections.forEach(card => {
+//                 maxHeight = Math.max(maxHeight, card.offsetHeight);
+//             });
+
+//             sections.forEach(card => {
+//                 card.style.height = `${maxHeight}px`;
+//             });
+//         }
+//     }
+
+//     let resizeTimeout;
+//     function handleResize() {
+//         clearTimeout(resizeTimeout);
+//         resizeTimeout = setTimeout(() => {
+//             setEqualHeight();
+//             ScrollTrigger.refresh();
+//         }, 100);
+//     }
+
+//     window.addEventListener('resize', handleResize);
+
+//     // Build ScrollTriggers AFTER equal heights are ready
+//     function initScrollTriggers() {
+//         const sections = document.querySelectorAll(".service_card");
+//         sections.forEach((card) => {
+//             let nextSection = card.nextElementSibling;
+
+//             ScrollTrigger.create({
+//                 trigger: card,
+//                 start: "top top",
+//                 endTrigger: nextSection || card,
+//                 end: "top top",
+//                 pin: true,
+//                 pinSpacing: false,
+//                 anticipatePin: 1,
+//                 onUpdate: self => {
+//                     card.style.willChange = self.isActive ? 'transform' : '';
+//                 }
+//             });
+//         });
+//     }
+
+//     // First run after images loaded (important for mobile)
+//     window.addEventListener('load', () => {
+//         setEqualHeight();
+//         initScrollTriggers();
+//         ScrollTrigger.refresh();
+//     });
+// });
 document.addEventListener('DOMContentLoaded', () => {
     gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-
+    
+    let scrollTriggers = []; // Store ScrollTrigger instances for cleanup
+    
+    // 2. Equal heights for cards (mobile only)
     function setEqualHeight() {
         const sections = document.querySelectorAll(".service_card");
         let maxHeight = 0;
 
-        sections.forEach(card => {
-            card.style.removeProperty('height');
-            void card.offsetHeight; // force reflow
-        });
+        // First remove any existing height
+        sections.forEach(card => card.style.removeProperty("height"));
 
         if (window.innerWidth <= 768) {
             sections.forEach(card => {
                 maxHeight = Math.max(maxHeight, card.offsetHeight);
             });
-
             sections.forEach(card => {
                 card.style.height = `${maxHeight}px`;
             });
         }
     }
 
-    let resizeTimeout;
-    function handleResize() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            setEqualHeight();
-            ScrollTrigger.refresh();
-        }, 100);
-    }
-
-    window.addEventListener('resize', handleResize);
-
-    // Build ScrollTriggers AFTER equal heights are ready
+    // 3. Pinning logic instead of sticky
     function initScrollTriggers() {
+        // First clean up any existing ScrollTriggers
+        scrollTriggers.forEach(st => st.kill());
+        scrollTriggers = [];
+        
         const sections = document.querySelectorAll(".service_card");
-        sections.forEach((card) => {
-            let nextSection = card.nextElementSibling;
-
-            ScrollTrigger.create({
+        
+        sections.forEach((card, i) => {
+            const nextSection = sections[i + 1];
+            
+            const st = ScrollTrigger.create({
                 trigger: card,
                 start: "top top",
                 endTrigger: nextSection || card,
-                end: "top top",
+                end: nextSection ? "top top" : "bottom bottom", // Better end point for last card
                 pin: true,
                 pinSpacing: false,
                 anticipatePin: 1,
                 onUpdate: self => {
-                    card.style.willChange = self.isActive ? 'transform' : '';
-                }
+                    card.style.willChange = self.isActive ? "transform" : "auto";
+                },
+                markers: false // Set to true for debugging
             });
+            
+            scrollTriggers.push(st);
         });
     }
 
-    // First run after images loaded (important for mobile)
-    window.addEventListener('load', () => {
+    // 4. Refresh utility
+    function refreshAll() {
+        setEqualHeight();
+        initScrollTriggers(); // Reinitialize instead of just refreshing
+    }
+
+    // 5. Resize listener with better debounce
+    let resizeTimeout;
+    function handleResize() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            refreshAll();
+        }, 200);
+    }
+    
+    window.addEventListener("resize", handleResize);
+
+    // 6. Initial setup
+    function init() {
         setEqualHeight();
         initScrollTriggers();
-        ScrollTrigger.refresh();
+    }
+
+    // Run after assets are ready
+    window.addEventListener("load", () => {
+        requestAnimationFrame(init);
     });
+
+    // Cleanup on unmount (if using SPA)
+    return () => {
+        window.removeEventListener("resize", handleResize);
+        scrollTriggers.forEach(st => st.kill());
+    };
 });
 
 
