@@ -318,8 +318,8 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const marqueeWrap = document.querySelector(".aa_img-marquee");
-    const marqueeItems = gsap.utils.toArray(".aa_img_marquee_card");
+    const marqueeWrap = document.querySelector(".about_author_img-marquee");
+    const marqueeItems = gsap.utils.toArray(".about_author_img_marquee_card");
 
     // Get total width of one cycle
     const totalWidth = marqueeItems[0].offsetWidth;
@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Duplicate the content to make seamless loop
     marqueeWrap.innerHTML += marqueeWrap.innerHTML;
 
-    gsap.to(".aa_img_marquee_card", {
+    gsap.to(".about_author_img_marquee_card", {
         xPercent: -100,
         repeat: -1,
         ease: "none",
@@ -748,12 +748,12 @@ document.addEventListener('DOMContentLoaded', function() {
 // about css
 
 document.addEventListener('DOMContentLoaded', function () {
-    const faqCards = document.querySelectorAll('.lb_faq_card');
+    const faqCards = document.querySelectorAll('.location_bio_faq_card');
 
     faqCards.forEach(card => {
-        const question = card.querySelector('.lb_ques_wrap');
-        const answerWrap = card.querySelector('.lb_ans_wrap');
-        const icon = card.querySelector('.lb_faq_icon');
+        const question = card.querySelector('.location_bio_ques_wrap');
+        const answerWrap = card.querySelector('.location_bio_ans_wrap');
+        const icon = card.querySelector('.location_bio_faq_icon');
 
         question.addEventListener('click', function () {
             const isOpen = answerWrap.style.height && answerWrap.style.height !== '0px';
