@@ -707,3 +707,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
+// steps_card-wrap.is_about---------------
+document.addEventListener("DOMContentLoaded", () => {
+    gsap.registerPlugin(ScrollTrigger);
+  
+    gsap.to(".steps_card-wrap.is_about", {
+      xPercent: -22, // ✅ moves from 0% to -22%
+      ease: "none",  // smooth linear motion
+      scrollTrigger: {
+        trigger: ".steps_card-wrap.is_about",
+        start: "top bottom",   // when it enters viewport
+        end: "bottom top",     // until it leaves viewport
+        scrub: true,           // ties animation to scroll
+        // markers: true,      // enable to debug positions
+      }
+    });
+  });
