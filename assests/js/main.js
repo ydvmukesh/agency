@@ -216,22 +216,24 @@ window.addEventListener('scroll', function() {
 });
 
 
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", () => {
     // Register plugins
     gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-    
-    // Initialize ScrollSmoother
-    ScrollSmoother.create({
-      wrapper: "#smooth-wrapper",
-      content: "#smooth-content",
-      smooth:1,             // how long (in seconds) it takes to "catch up" to the native scroll position
-      effects: true,           // looks for data-speed and data-lag attributes on elements
-      normalizeScroll: true,   // prevents address bar from showing/hiding on most devices
-      ignoreMobileResize: true,// skips ScrollTrigger.refresh() on mobile resize
-      smoothTouch: 0.1 // enable on touch devices
-    });
+  
+    // Check screen size (disable for mobile)
+    if (window.innerWidth > 768) {  // you can change 768 to your breakpoint
+      ScrollSmoother.create({
+        wrapper: "#smooth-wrapper",
+        content: "#smooth-content",
+        smooth: 1,              // how long it takes to "catch up" to scroll
+        effects: true,          // looks for data-speed and data-lag attributes
+        normalizeScroll: true,  // prevents address bar flicker
+        ignoreMobileResize: true,
+        smoothTouch: 0.1
+      });
+    }
   });
-
+  
 // . award_heading.is_1 --------------------------------------------------------//
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -249,7 +251,8 @@ document.addEventListener('DOMContentLoaded', () => {
         start: "top 80%",
         end: "bottom 50%",
         scrub: 1.2,
-        scroller: isMobile ? undefined : "#smooth-wrapper"
+        // scroller: isMobile ? undefined : "#smooth-wrapper"
+        scroller: "#smooth-wrapper" // Always use this if it exists
     };
 
     gsap.to(".award_heading.is_1", {
@@ -269,6 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 
 
 
@@ -519,17 +523,108 @@ document.addEventListener('DOMContentLoaded', () => {
 //         ScrollTrigger.refresh();
 //     });
 // });
+// document.addEventListener('DOMContentLoaded', () => {
+//     gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+    
+//     let scrollTriggers = []; // Store ScrollTrigger instances for cleanup
+    
+//     // 2. Equal heights for cards (mobile only)
+//     function setEqualHeight() {
+//         const sections = document.querySelectorAll(".service_card");
+//         let maxHeight = 0;
+
+//         // First remove any existing height
+//         sections.forEach(card => card.style.removeProperty("height"));
+
+//         if (window.innerWidth <= 768) {
+//             sections.forEach(card => {
+//                 maxHeight = Math.max(maxHeight, card.offsetHeight);
+//             });
+//             sections.forEach(card => {
+//                 card.style.height = `${maxHeight}px`;
+//             });
+//         }
+//     }
+
+//     // 3. Pinning logic instead of sticky
+//     function initScrollTriggers() {
+//         // First clean up any existing ScrollTriggers
+//         scrollTriggers.forEach(st => st.kill());
+//         scrollTriggers = [];
+        
+//         const sections = document.querySelectorAll(".service_card");
+        
+//         sections.forEach((card, i) => {
+//             const nextSection = sections[i + 1];
+            
+//             const st = ScrollTrigger.create({
+//                 trigger: card,
+//                 start: "top top",
+//                 endTrigger: nextSection || card,
+//                 end: nextSection ? "top top" : "bottom bottom", // Better end point for last card
+//                 pin: true,
+//                 pinSpacing: false,
+//                 anticipatePin: 1,
+//                 onUpdate: self => {
+//                     card.style.willChange = self.isActive ? "transform" : "auto";
+//                 },
+//                 markers: false // Set to true for debugging
+//             });
+            
+//             scrollTriggers.push(st);
+//         });
+//     }
+
+//     // 4. Refresh utility
+//     function refreshAll() {
+//         setEqualHeight();
+//         initScrollTriggers(); // Reinitialize instead of just refreshing
+//     }
+
+//     // 5. Resize listener with better debounce
+//     let resizeTimeout;
+//     function handleResize() {
+//         clearTimeout(resizeTimeout);
+//         resizeTimeout = setTimeout(() => {
+//             refreshAll();
+//         }, 200);
+//     }
+    
+//     window.addEventListener("resize", handleResize);
+
+//     // 6. Initial setup
+//     function init() {
+//         setEqualHeight();
+//         initScrollTriggers();
+//     }
+
+//     // Run after assets are ready
+//     window.addEventListener("load", () => {
+//         requestAnimationFrame(init);
+//     });
+
+//     // Cleanup on unmount (if using SPA)
+//     return () => {
+//         window.removeEventListener("resize", handleResize);
+//         scrollTriggers.forEach(st => st.kill());
+//     };
+// });
+
+
+// services see more and see less
+
+
 document.addEventListener('DOMContentLoaded', () => {
     gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
     
     let scrollTriggers = []; // Store ScrollTrigger instances for cleanup
     
-    // 2. Equal heights for cards (mobile only)
+    // Equal heights for cards (mobile only)
     function setEqualHeight() {
         const sections = document.querySelectorAll(".service_card");
         let maxHeight = 0;
 
-        // First remove any existing height
+        // Reset existing height
         sections.forEach(card => card.style.removeProperty("height"));
 
         if (window.innerWidth <= 768) {
@@ -542,42 +637,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 3. Pinning logic instead of sticky
+    // Pinning logic (desktop only)
     function initScrollTriggers() {
-        // First clean up any existing ScrollTriggers
+        // Kill existing triggers
         scrollTriggers.forEach(st => st.kill());
         scrollTriggers = [];
         
-        const sections = document.querySelectorAll(".service_card");
-        
-        sections.forEach((card, i) => {
-            const nextSection = sections[i + 1];
+        // Only run on desktop
+        if (window.innerWidth > 768) {
+            const sections = document.querySelectorAll(".service_card");
             
-            const st = ScrollTrigger.create({
-                trigger: card,
-                start: "top top",
-                endTrigger: nextSection || card,
-                end: nextSection ? "top top" : "bottom bottom", // Better end point for last card
-                pin: true,
-                pinSpacing: false,
-                anticipatePin: 1,
-                onUpdate: self => {
-                    card.style.willChange = self.isActive ? "transform" : "auto";
-                },
-                markers: false // Set to true for debugging
+            sections.forEach((card, i) => {
+                const nextSection = sections[i + 1];
+                
+                const st = ScrollTrigger.create({
+                    trigger: card,
+                    start: "top top",
+                    endTrigger: nextSection || card,
+                    end: nextSection ? "top top" : "bottom bottom",
+                    pin: true,
+                    pinSpacing: false,
+                    anticipatePin: 1,
+                    onUpdate: self => {
+                        card.style.willChange = self.isActive ? "transform" : "auto";
+                    },
+                    markers: false
+                });
+                
+                scrollTriggers.push(st);
             });
-            
-            scrollTriggers.push(st);
-        });
+        }
     }
 
-    // 4. Refresh utility
+    // Refresh utility
     function refreshAll() {
         setEqualHeight();
-        initScrollTriggers(); // Reinitialize instead of just refreshing
+        initScrollTriggers();
     }
 
-    // 5. Resize listener with better debounce
+    // Resize debounce
     let resizeTimeout;
     function handleResize() {
         clearTimeout(resizeTimeout);
@@ -588,10 +686,23 @@ document.addEventListener('DOMContentLoaded', () => {
     
     window.addEventListener("resize", handleResize);
 
-    // 6. Initial setup
+    // Initial setup
     function init() {
         setEqualHeight();
         initScrollTriggers();
+
+        // Optional: enable ScrollSmoother only on desktop
+        if (window.innerWidth > 768) {
+            ScrollSmoother.create({
+                wrapper: "#smooth-wrapper",
+                content: "#smooth-content",
+                smooth: 1,
+                effects: true,
+                normalizeScroll: true,
+                ignoreMobileResize: true,
+                smoothTouch: 0.1
+            });
+        }
     }
 
     // Run after assets are ready
@@ -599,15 +710,13 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(init);
     });
 
-    // Cleanup on unmount (if using SPA)
+    // Cleanup (SPA safe)
     return () => {
         window.removeEventListener("resize", handleResize);
         scrollTriggers.forEach(st => st.kill());
     };
 });
 
-
-// services see more and see less
 
 
 document.addEventListener('DOMContentLoaded', function() {
