@@ -301,7 +301,7 @@ section{display:block;}
 .container.is_team {
     grid-column-gap: 4.5em;
     grid-row-gap: 4.5em;
-    padding-top: 9.5rem;
+    padding-top: 0rem;
     padding-bottom: 9.5rem;
 }
 .team_section{background-color:#fff;overflow:hidden;}
@@ -336,7 +336,7 @@ section{display:block;}
 .team_section{overflow:hidden;}
 }
 @media screen and (max-width:991px){
-.container.is_team{padding-top:4rem;padding-bottom:4rem;}
+.container.is_team{padding-top:0rem;padding-bottom:4rem;}
 .bp_hover-bg{display:none;}
 .team_marquee-card{margin-right:.5rem;}
 .team_text{font-size:.625rem;}

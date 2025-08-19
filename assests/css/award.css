@@ -92,7 +92,11 @@
     font-size: 1.375rem;
     font-weight: 500;
 }
-
+.award_heading {
+    will-change: transform, opacity, filter;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
 .award_heading.is_1 {
     flex: none;
     margin-left: -4rem;
